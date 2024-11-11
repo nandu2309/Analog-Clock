@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analog Clock</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+     <style>
+        body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #000000;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.clock {
+    position: relative;
+    height: 450px;
+    border: 4px solid #ff0000;
+    border-radius: 50%;
+    background-color: #000000;
+    box-shadow: 0px 0px 70px rgba(255, 0, 0, 0.7);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hand {
+    position: absolute;
+    bottom: 50%;
+    background-color: #000;
+    transform-origin: bottom center;
+    border-radius: 5px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.hour {
+    width: 5px;
+    height: 120px;
+    background-color: #ffffff;
+}
+
+.minute {
+    width: 4px;
+    height: 145px;
+    background-color: #ffffff;
+}
+
+.second {
+    width: 2px;
+    height: 160px;
+    background-color: #ffffff;
+}
+
+.center {
+    width: 12px;
+    height: 12px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* Digital Time Display */
+.digital-time {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+.box1 {
+    background-color: #000000;
+    width: 150px;
+    border: 5px solid #4b4b4b;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+img{
+    height: 450px;
+    filter: brightness(0) invert(1); /* This will turn the image color to white */
+}
+     </style>
+</head>
+<body>
+    <div class="container">
+        <div class="clock">
+            <img src="clock.png" alt="clock">
+            <!-- Clock hands -->
+            <div class="hand hour" id="hour"></div>
+            <div class="hand minute" id="minute"></div>
+            <div class="hand second" id="second"></div>
+
+            <!-- Center of the clock -->
+            <div class="center"></div>
+        </div>
+
+        <!-- Digital Time Display -->
+        <div class="box1">
+            <div class="digital-time" id="digital-time">
+            00:00:00
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="script.js"></script> -->
+     <script>
+        function setClock() {
+    const now = new Date();
+    
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    
+    const hourDegrees = (hours % 12) * 30 + (minutes / 60) * 30;  // 360 / 12 = 30 degrees per hour
+    const minuteDegrees = minutes * 6 + (seconds / 60) * 6;        // 360 / 60 = 6 degrees per minute
+    const secondDegrees = seconds * 6;                              // 360 / 60 = 6 degrees per second
+
+    // Update analog clock hands
+    document.getElementById('hour').style.transform = `rotate(${hourDegrees}deg)`;
+    document.getElementById('minute').style.transform = `rotate(${minuteDegrees}deg)`;
+    document.getElementById('second').style.transform = `rotate(${secondDegrees}deg)`;
+
+    // Update digital time display
+    const formattedTime = formatTime(hours, minutes, seconds);
+    document.getElementById('digital-time').textContent = formattedTime;
+}
+
+function formatTime(hours, minutes, seconds) {
+    // Add leading zero for single digit numbers
+    const formattedHours = hours < 10 ? '0' + hours : hours;
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+}
+
+// Update the clock every second
+setInterval(setClock, 1000);
+
+// Initialize the clock immediately
+setClock();
+
+     </script>
+</body>
+</html>
